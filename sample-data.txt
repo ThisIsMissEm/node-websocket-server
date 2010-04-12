@@ -1,0 +1,17 @@
+GET /chat.ws HTTP/1.1
+Upgrade: WebSocket
+Connection: Upgrade
+
+
+
+GET /demo HTTP/1.1
+Host: example.com
+Connection: Upgrade
+Sec-WebSocket-Key2: 12998 5 Y3 1  .P00
+Sec-WebSocket-Protocol: sample
+Upgrade: WebSocket
+Sec-WebSocket-Key1: 4 @1  46546xW%0l 1 5
+Origin: http://example.com
+
+^n:ds[4U
+
