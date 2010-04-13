@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <title>node-websocket-server test</title>
+  </head>
+  <body> 
+		<div id="time">teest</div>
+	  <a href="#" id="send">Send Something</a>
+    <script type="text/javascript">
+		document.getElementById("send").addEventListener("click", function(){
+			if(conn){
+				conn.send("Test Message");
+			}
+			return false;
+		}, true);
+
+		var conn;
+setTimeout(function(){
+		var connect = function(){
+			conn = new WebSocket("ws://192.168.46.19:7000/test");
+		};
+
+		if(window["WebSocket"]){
+			console.log("Connecting...");
+			connect();
+			console.log("Started Connection.");	
+		} else {
+			console.log("Not Supported");
+		}
+
+		conn.onmessage = function(evt){
+			console.log(evt);
+		};
+
+		conn.onclose = function(){
+			console.log("onclose");
+		};
+
+		conn.onopen = function(){
+			console.log("onopen");
+		};
+		
+		console.log(conn);
+}, 1000);
+    </script>
+    
+  </body>
+</html>

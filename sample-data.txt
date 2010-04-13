@@ -3,6 +3,14 @@ Upgrade: WebSocket
 Connection: Upgrade
 
 
+GET /app/cc4ce1421747bb6b1f44?channel=test_channel HTTP/1.1\r\nUpgrade: WebSocket\r\nConnection: Upgrade\r\n\r\n
+
+GET /app/cc4ce1421747bb6b1f44?channel=test_channel HTTP/1.1
+Upgrade: WebSocket
+Connection: Upgrade
+Host: ws.pusherapp.com
+Origin: http://ws.pusherapp.com
+
 
 GET /demo HTTP/1.1
 Host: example.com
@@ -15,3 +23,17 @@ Origin: http://example.com
 
 ^n:ds[4U
 
+
+GET / HTTP/1.1
+Connection: Upgrade
+Host: example.com
+Upgrade: WebSocket
+Sec-WebSocket-Key1: 3e6b263  4 17 80
+Origin: http://example.com
+Sec-WebSocket-Key2: 17  9 G`ZD9   2 2b 7X 3 /r90
+
+WjN}|M(6
+
+
+
+String.fromCharCode(829309203>>>16, 829309203 & 0xFF, 259970620>>>16, 259970620&0xFF) + ^n:ds[4U
