@@ -24,6 +24,19 @@ Origin: http://example.com
 ^n:ds[4U
 
 
+GET /test HTTP/1.1
+Upgrade: WebSocket
+Connection: Upgrade
+Host: 192.168.46.19:7000
+Origin: http://localhost:3000
+Content-Length: 4
+
+test
+
+
+
+
+
 GET / HTTP/1.1
 Connection: Upgrade
 Host: example.com
