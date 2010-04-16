@@ -12,4 +12,4 @@ server.addListener("ready", function(s){
   }, 1000);
 });
 
-server.listen(7000, '192.168.46.19');
+server.listen(7000);
