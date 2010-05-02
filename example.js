@@ -9,10 +9,19 @@ var server = ws.createServer();
 
 server.listen(7000);
 
+server.addListener("readyStateChange", function(readyState){
+  log("stateChanged: "+readyState);
+});
+
 server.addListener("client", function(conn){
-  log("new connection");
+  log(conn._id + ": new connection");
+  
+  conn.addListener("open", function(){
+    log(conn._id + ": onOpen");
+  });
+  
   conn.addListener("message", function(message){
-    log(JSON.stringify(message));
-    conn.write(JSON.stringify(message));
-  })
-})
+    log(conn._id + ": "+JSON.stringify(message));
+    conn.write(conn._id + ": "+message);
+  });
+});
