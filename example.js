@@ -13,5 +13,6 @@ server.addListener("client", function(conn){
   log("new connection");
   conn.addListener("message", function(message){
     log(JSON.stringify(message));
+    conn.write(JSON.stringify(message));
   })
 })
