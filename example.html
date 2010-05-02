@@ -5,6 +5,7 @@
   </head>
   <body> 
 	  <a href="#" id="send">Send Something</a>
+		<div id="log"></div>
     <script type="text/javascript">
 		document.getElementById("send").addEventListener("click", function(){
 			if(conn){
@@ -26,9 +27,14 @@ setTimeout(function(){
 		} else {
 			console.log("Not Supported");
 		}
-
+		
+		var output_log = document.getElementById("log");
+		
 		conn.onmessage = function(evt){
 			console.log(evt);
+			var msg = document.createElement("p");
+			msg.innerHTML = evt.data;
+			output_log.appendChild(msg);
 		};
 
 		conn.onclose = function(){
