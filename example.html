@@ -4,7 +4,6 @@
     <title>node-websocket-server test</title>
   </head>
   <body> 
-		<div id="time">teest</div>
 	  <a href="#" id="send">Send Something</a>
     <script type="text/javascript">
 		document.getElementById("send").addEventListener("click", function(){
@@ -17,7 +16,7 @@
 		var conn;
 setTimeout(function(){
 		var connect = function(){
-			conn = new WebSocket("ws://192.168.46.19:7000/test");
+			conn = new WebSocket("ws://localhost:7000/test");
 		};
 
 		if(window["WebSocket"]){

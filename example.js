@@ -1,15 +1,17 @@
+var sys = require("sys");
 var ws = require('./lib/ws');
 
-var server = new ws.Server();
+function log(data){
+  sys.log("\033[0;32m"+data+"\033[0m");
+}
 
-server.addListener("connect", function(){
-  sys.puts("connect!");
-});
-
-server.addListener("ready", function(s){
-  setTimeout(function(){
-    s.send(JSON.stringify({message: "test"}));
-  }, 1000);
-});
+var server = ws.createServer();
 
 server.listen(7000);
+
+server.addListener("client", function(conn){
+  log("new connection");
+  conn.addListener("message", function(message){
+    log(JSON.stringify(message));
+  })
+})
