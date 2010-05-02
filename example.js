@@ -22,6 +22,9 @@ server.addListener("client", function(conn){
   
   conn.addListener("message", function(message){
     log(conn._id + ": "+JSON.stringify(message));
-    conn.write(conn._id + ": "+message);
+    
+    server.clients.forEach(function(client){
+      client.write(conn._id + ": "+message);
+    });
   });
 });
