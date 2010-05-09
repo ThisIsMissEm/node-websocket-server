@@ -34,3 +34,8 @@ server.addListener("connection", function(conn){
     braodcast(server, conn, message);
   });
 });
+
+server.addListener("request", function(req, res){
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('This is, infact a websocket server, but we can do http!\n');
+});
