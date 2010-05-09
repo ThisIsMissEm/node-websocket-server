@@ -7,25 +7,30 @@ function log(data){
   sys.log("\033[0;32m"+data.toString()+"\033[0m");
 };
 
-
 var server = ws.createServer();
-
 server.listen(8000);
 
 server.addListener("listening", function(){
   log("Listening for connections.");
 });
 
+function braodcast(server, conn, data){
+  for(var cid in server.connections){
+    server.connections[cid].write("<"+conn._id+"> "+data);
+  }
+};
+
 server.addListener("connection", function(conn){
-  log("<"+conn._id+"> new connection");
-  conn.write(logger.timestamp()+" new connection");
+  log("<"+conn._id+"> connected");
+  braodcast(server, conn, "connected");
   
   conn.addListener("close", function(){
     log("<"+conn._id+"> onClose");
+    braodcast(server, conn, "disconnected");
   });
 
   conn.addListener("message", function(message){
     log("<"+conn._id + "> "+message);
-    conn.write(logger.timestamp()+" "+message);
+    braodcast(server, conn, message);
   });
 });

@@ -29,11 +29,10 @@ setTimeout(function(){
 		}
 		
 		var output_log = document.getElementById("log");
-		var x = 0;
 		conn.onmessage = function(evt){
 			console.log(evt.data);
 			var msg = document.createElement("p");
-			msg.innerHTML = (x++)+""+evt.data;
+			msg.innerHTML = evt.data;
 			output_log.appendChild(msg);
 		};
 
