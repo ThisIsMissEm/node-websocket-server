@@ -66,9 +66,9 @@ is now ready to send and receive data.
 
 The same as the `http.Server` listen method.
 
-### server.end() ###
+### server.close() ###
 
-The same as the `http.Server` end method.
+The same as the `http.Server` close method.
 
 ### Event: listening ###
 
