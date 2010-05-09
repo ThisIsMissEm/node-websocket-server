@@ -17,7 +17,7 @@
 		var conn;
 setTimeout(function(){
 		var connect = function(){
-			conn = new WebSocket("ws://localhost:7000/test");
+			conn = new WebSocket("ws://localhost:8000/test");
 		};
 
 		if(window["WebSocket"]){
@@ -29,11 +29,11 @@ setTimeout(function(){
 		}
 		
 		var output_log = document.getElementById("log");
-		
+		var x = 0;
 		conn.onmessage = function(evt){
-			console.log(evt);
+			console.log(evt.data);
 			var msg = document.createElement("p");
-			msg.innerHTML = evt.data;
+			msg.innerHTML = (x++)+""+evt.data;
 			output_log.appendChild(msg);
 		};
 
@@ -43,10 +43,32 @@ setTimeout(function(){
 
 		conn.onopen = function(){
 			console.log("onopen");
+			// var i = 0;
+			// var timer = setInterval(function(){
+			// 	console.log(conn);
+			// 	conn.send("Test Message");
+			// 	if(i++ == 10){
+			// 		clearInterval(timer);
+			// 	}
+			// }, 10);
 		};
 		
 		console.log(conn);
 }, 1000);
+
+function rapidFire(){
+	var i = 0, o = 0;
+	var interval = setInterval(function(){
+		var r_conn = new WebSocket("ws://localhost:8000/");
+		console.log(++i, o);
+		r_conn.onopen = function(){
+			++o;
+		};
+		if(i == 1000){
+			clearInterval(interval);
+		}
+	}, 0);
+}
     </script>
     
   </body>
