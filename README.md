@@ -62,6 +62,14 @@ After a websocket client connects to the server, the server will emit the `'conn
 instance for the connection. This signifies that the connection has undertaken the necessary websocket handshaking and 
 is now ready to send and receive data.
 
+### server.listen(port, host) ###
+
+The same as the `http.Server` listen method.
+
+### server.end() ###
+
+The same as the `http.Server` end method.
+
 ### Event: listening ###
 
 `function () { }`
@@ -92,14 +100,6 @@ The same as the `http.Server` `stream` event.
 `function (errno) { }`
 
 Emits when the server is closed. Currently inherited from `http.Server`
-
-### listen(port, host) ###
-
-The same as the `http.Server` listen method.
-
-### end() ###
-
-The same as the `http.Server` end method.
 
 ## ws/connection ##
 
