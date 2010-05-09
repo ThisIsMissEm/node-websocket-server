@@ -19,7 +19,7 @@ An example of a simple server that will echo the messages received back out.
 		  sys.log("Listening for connections.");
 		});
 
-		function braodcast(server, conn, data){
+		function broadcast(server, conn, data){
 		  for(var cid in server.connections){
 		    server.connections[cid].write("<"+conn._id+"> "+data);
 		  }
@@ -27,16 +27,16 @@ An example of a simple server that will echo the messages received back out.
 
 		server.addListener("connection", function(conn){
 		  sys.log("<"+conn._id+"> connected");
-		  braodcast(server, conn, "connected");
+		  broadcast(server, conn, "connected");
 
 		  conn.addListener("close", function(){
 		    sys.log("<"+conn._id+"> onClose");
-		    braodcast(server, conn, "disconnected");
+		    broadcast(server, conn, "disconnected");
 		  });
 
 		  conn.addListener("message", function(message){
 		    sys.log("<"+conn._id + "> "+message);
-		    braodcast(server, conn, message);
+		    broadcast(server, conn, message);
 		  });
 		});
 
