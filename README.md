@@ -97,7 +97,7 @@ Emits when the server is closed. Currently inherited from `http.Server`
 
 The same as the `http.Server` listen method.
 
-### Event: end() ###
+### end() ###
 
 The same as the `http.Server` end method.
 
