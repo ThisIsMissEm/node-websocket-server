@@ -1,8 +1,8 @@
-{ "name" : "websocket-server"
-, "version" : "1.0.5"
-, "author" : "Micheil Smith <micheil@brandedcode.com>"
-, "description" : "A WebSocket server written in low-level node.js, 90-100% spec compatible."
-, "main" : "./lib/ws"
-, "engines" : { "node" : ">=0.1.94-0" }
-, "licenses": [{"type": "MIT", "url": "./LICENSE.md"}]
+{ "version": "1.0.5"
+, "description": "A WebSocket server written in low-level node.js, 90-100% spec compatible."
+, "main": "./lib/ws"
+, "author": "Micheil Smith <micheil@brandedcode.com>"
+, "licenses": [{ "type": "MIT", "url": "./LICENSE.md" }]
+, "name": "websocket-server"
+, "engines": { "node": ">=0.1.94-0"}
 }
