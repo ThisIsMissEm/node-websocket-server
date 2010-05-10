@@ -58,7 +58,7 @@ namespace :npm do
   desc "Publish to NPM"
   task :publish do
     puts "Publishing to NPM"
-    system("set -v", "npm publish .", "set +v")
+    system("npm publish #{`pwd`}")
     puts "-> Done"
   end
 end
