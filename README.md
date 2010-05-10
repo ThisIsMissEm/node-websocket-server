@@ -68,6 +68,10 @@ is now ready to send and receive data.
 
 The same as the `http.Server` listen method.
 
+### server.broadcast(message) ###
+
+Sends `message` to all connected clients.
+
 ### server.close() ###
 
 The same as the `http.Server` close method.
