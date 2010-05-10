@@ -24,7 +24,8 @@ An example of a simple server that will echo the messages received back out.
 		    server.connections[cid].write("<"+conn._id+"> "+data);
 		  }
 		};
-
+		
+		// Handle WebSocket Requests:
 		server.addListener("connection", function(conn){
 		  sys.log("<"+conn._id+"> connected");
 		  broadcast(server, conn, "connected");
@@ -39,6 +40,13 @@ An example of a simple server that will echo the messages received back out.
 		    broadcast(server, conn, message);
 		  });
 		});
+		
+		// And handle standard HTTP Requests:
+		server.addListener("request", function(req, res){
+		  res.writeHead(200, {'Content-Type': 'text/plain'});
+		  res.end('This is, infact a websocket server, but we can do http!\n');
+		});
+		
 
 Coupled with a websocket client like the `example.html`, and you have a working websocket chat client (sort of.)
 
