@@ -12,6 +12,7 @@ An example of a simple server that will echo the messages received back out.
 		var sys = require("sys");
 		var ws = require('./lib/ws');
 		
+
 		var server = ws.createServer();
 		server.listen(8000);
 
@@ -19,34 +20,27 @@ An example of a simple server that will echo the messages received back out.
 		  sys.log("Listening for connections.");
 		});
 
-		function broadcast(server, conn, data){
-		  for(var cid in server.connections){
-		    server.connections[cid].write("<"+conn._id+"> "+data);
-		  }
-		};
-		
-		// Handle WebSocket Requests:
+		// Handle WebSocket Requests
 		server.addListener("connection", function(conn){
 		  sys.log("<"+conn._id+"> connected");
-		  broadcast(server, conn, "connected");
+		  server.broadcast("<"+conn._id+"> connected");
 
 		  conn.addListener("close", function(){
 		    sys.log("<"+conn._id+"> onClose");
-		    broadcast(server, conn, "disconnected");
+		    server.broadcast("<"+conn._id+"> disconnected");
 		  });
 
 		  conn.addListener("message", function(message){
 		    sys.log("<"+conn._id + "> "+message);
-		    broadcast(server, conn, message);
+		    server.broadcast("<"+conn._id+"> "+message);
 		  });
 		});
-		
-		// And handle standard HTTP Requests:
+
+		// Handle HTTP Requests:
 		server.addListener("request", function(req, res){
 		  res.writeHead(200, {'Content-Type': 'text/plain'});
 		  res.end('This is, infact a websocket server, but we can do http!\n');
-		});
-		
+		});		
 
 Coupled with a websocket client like the `example.html`, and you have a working websocket chat client (sort of.)
 
