@@ -36,10 +36,10 @@ An example of a simple server that will echo the messages received back out.
 		  });
 		});
 
-		// Handle HTTP Requests:
+		// Handle HTTP Requests that don't UPGRADE to websockets
 		server.addListener("request", function(req, res){
 		  res.writeHead(200, {'Content-Type': 'text/plain'});
-		  res.end('This is, infact a websocket server, but we can do http!\n');
+		  res.end('We can handle normal connections too!\n');
 		});		
 
 Coupled with a websocket client like the `example.html`, and you have a working websocket chat client (sort of.)
@@ -50,7 +50,7 @@ The server acts like a normal http server in many respects, and exposes much of 
 methods. However, there are a few differences, and things that haven't yet been implemented.
 
 `ws.creareServer()` returns an instance of `ws.Server`, which acts like `http.Server`. However, not all methods 
-and events that act on `http.Server` will act on `ws.Server`.
+and events that act on `http.Server` will act on `ws.Server`.  Your application can handle normal http requests by listening for the "request" event. 
 
 `ws.createServer()` and `ws.Server()` takes an options object as its only parameter. The options object has a these
 defaults:
@@ -94,6 +94,7 @@ Emits when a websocket client connects to the server. The `connection` is an ins
 
 Emits when a client connects using standard HTTP to the server.
 This is the same as the `http.Server` `request` event.
+Use this to handle non-WebSocket connections.
 
 ### Event: stream ###
 
