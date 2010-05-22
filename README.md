@@ -39,7 +39,7 @@ An example of a simple server that will echo the messages received back out.
 		// Handle HTTP Requests that don't UPGRADE to websockets
 		server.addListener("request", function(req, res){
 		  res.writeHead(200, {'Content-Type': 'text/plain'});
-		  res.end('We can handle normal connections too!\n');
+		  res.end('We can handle normal http connections too!\n');
 		});		
 
 Coupled with a websocket client like the `example.html`, and you have a working websocket chat client (sort of.)
@@ -94,7 +94,7 @@ Emits when a websocket client connects to the server. The `connection` is an ins
 
 Emits when a client connects using standard HTTP to the server.
 This is the same as the `http.Server` `request` event.
-Use this to handle non-WebSocket connections.
+Use this to handle normal http connections that won't upgrade to WebSocket.
 
 ### Event: stream ###
 
