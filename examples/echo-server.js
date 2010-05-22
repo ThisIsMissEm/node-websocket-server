@@ -7,7 +7,9 @@ function log(data){
   sys.log("\033[0;32m"+data.toString()+"\033[0m");
 };
 
-var server = ws.createServer();
+var server = ws.createServer({
+  debug: true
+});
 server.listen(8000);
 
 server.addListener("listening", function(){
