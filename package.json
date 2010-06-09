@@ -1,6 +1,11 @@
 { "version": "1.0.53"
 , "description": "A WebSocket server written in low-level node.js, 90-100% spec compatible."
+, "repository": { "type": "git"
+, "url": "http://github.com/miksago/node-websocket-server.git"
+}
 , "main": "./lib/ws"
+, "bugs": { "web": "http://github.com/miksago/node-websocket-server/issues"
+}
 , "author": "Micheil Smith <micheil@brandedcode.com>"
 , "licenses": [{ "type": "MIT", "url": "./LICENSE.md" }]
 , "name": "websocket-server"

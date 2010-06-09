@@ -5,6 +5,8 @@ require 'json'
 puts "---"
 
 
+@version = `git describe`.match("v([0-9]+\.[0-9]+.\[0-9]+).*")[1]
+
 def to_node_json(obj)
   obj = obj.to_json
   # reformat it a bit
@@ -35,15 +37,21 @@ end
 namespace :write do
   desc "Write the package.json file"
   task :pkgspec do
-    version = `git describe`.match("v([0-9]+\.[0-9]+.\[0-9]+).*")[1]
     package = {
       :name => "websocket-server",
-      :version => version,
+      :version => @version,
       :author => "Micheil Smith <micheil@brandedcode.com>",
       :description => "A WebSocket server written in low-level node.js, 90-100% spec compatible.",
       :main => "./lib/ws",
       :engines => { :node => ">=0.1.94-0" },
-      :licenses => [{ :type => "MIT", :url => "./LICENSE.md" }]
+      :licenses => [{ :type => "MIT", :url => "./LICENSE.md" }],
+      :repository => {
+        :type => "git",
+        :url => "http://github.com/miksago/node-websocket-server.git"
+      },
+      :bugs => {
+        :web => "http://github.com/miksago/node-websocket-server/issues"
+      }
     }
 
     puts "Making package.json"
@@ -59,6 +67,7 @@ namespace :npm do
   task :publish do
     puts "Publishing to NPM"
     system("npm publish #{`pwd`}")
+    system("npm tag websocket-server #{@version} stable")
     puts "-> Done"
   end
 end

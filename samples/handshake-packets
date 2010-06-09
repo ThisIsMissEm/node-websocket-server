@@ -76,5 +76,10 @@ Connection: Upgrade
 Host: example.com
 Origin: http://example.com
 
+GET / HTTP/1.1
+Upgrade: WebSocket
+Connection: Upgrade
+Host: example.com
+Origin: http://example.com
 
 
