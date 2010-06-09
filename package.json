@@ -1,4 +1,4 @@
-{ "version": "1.0.52"
+{ "version": "1.0.53"
 , "description": "A WebSocket server written in low-level node.js, 90-100% spec compatible."
 , "main": "./lib/ws"
 , "author": "Micheil Smith <micheil@brandedcode.com>"
