@@ -3,9 +3,12 @@
   <head>
     <title>node-websocket-server test</title>
   </head>
-  <body> 
+  <body>
+		<p style="padding: 1em; border: 2px solid red;">
+			<span style="color:red;">WARNING:</span> run the Spam Test at your own risk, see below for more information. <a href="#" id="spam">Run Spam Test</a><br /><br />
+Spam Test: The spam test rapidly spends 1 million messages to the websocket-server at a near instant interval, as such, any browsers connected to the server at the time of a spam test may crash or freeze up. The websocket server should not crash, but this is not 100% guaranteed.<br/><br />
+The author does not take responsibility for any damage or data loss caused.</p>
 	  <a href="#" id="send">Send Something</a>
-	<a href="#" id="spam">Spam the server.</a>
 		<div id="log"></div>
     <script type="text/javascript">
 		document.getElementById("send").addEventListener("click", function(){

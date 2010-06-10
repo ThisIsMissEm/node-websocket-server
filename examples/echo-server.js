@@ -29,7 +29,7 @@ server.addListener("connection", function(conn){
   
   conn.addListener("message", function(message){
     log([message.length, JSON.stringify(message)].join(" | "));
-//    server.broadcast("<"+conn._id+"> "+message);
+    server.broadcast("<"+conn._id+"> "+message);
   });
 });
 
