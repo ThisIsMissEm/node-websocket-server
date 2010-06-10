@@ -6,7 +6,7 @@ var logger = require("../utils/logger");
 
 var server = ws.createServer({
   debug: true,
-  version: "draft75"
+  version: "auto"
 });
 
 server.addListener("listening", function(){
