@@ -5,11 +5,21 @@
   </head>
   <body> 
 	  <a href="#" id="send">Send Something</a>
+	<a href="#" id="spam">Spam the server.</a>
 		<div id="log"></div>
     <script type="text/javascript">
 		document.getElementById("send").addEventListener("click", function(){
 			if(conn){
 				conn.send("Test Message");
+			}
+			return false;
+		}, true);
+		
+		document.getElementById("spam").addEventListener("click", function(){
+			if(conn){
+				for(var i=0; i<100000; ++i){
+					conn.send("t"+i);
+				}
 			}
 			return false;
 		}, true);
