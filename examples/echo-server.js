@@ -16,7 +16,7 @@ server.addListener("listening", function(){
 // Handle WebSocket Requests
 server.addListener("connection", function(conn){
   function log(data){
-    sys.log("\033[0;32m<"+conn._id+"> "+data.toString()+"\033[0m");
+    sys.puts((+new Date())+" \033[0;32m<"+conn._id+"> "+data.toString()+"\033[0m");
   };
   
   log("connected");
@@ -26,9 +26,9 @@ server.addListener("connection", function(conn){
     log("onClose");
     server.broadcast("<"+conn._id+"> disconnected");
   });
-
+  
   conn.addListener("message", function(message){
-    log(message);
+    log([message.length, JSON.stringify(message)].join("\t"));
 //    server.broadcast("<"+conn._id+"> "+message);
   });
 });
