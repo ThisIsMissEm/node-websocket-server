@@ -22,6 +22,8 @@ server.addListener("connection", function(conn){
   log("connected");
   server.broadcast("<"+conn._id+"> connected");
   
+  sys.puts(sys.inspect(server.manager.find(conn._id)));
+  
   conn.addListener("close", function(){
     log("onClose");
     server.broadcast("<"+conn._id+"> disconnected");
