@@ -1,48 +1,17 @@
 # node-websocket-server #
 
-**IMPORTANT: ** This module only works with node v0.1.94 and later.
+This is a server for the WebSocket Protocol. It currently to works
+with both [draft75](http://tools.ietf.org/html/draft-hixie-thewebsocketprotocol-75) and [draft76](http://www.whatwg.org/specs/web-socket-protocol/) of the protocol specification.
 
-This is a server for the WebSocket Protocol. It is designed to work 
-with both [draft75](http://tools.ietf.org/html/draft-hixie-thewebsocketprotocol-75) and [draft76 or later](http://www.whatwg.org/specs/web-socket-protocol/) of the protocol specification.
+## Compatibility ##
+
+This module is known to work with Node.js v0.1.98. May also work on Node.js greater than v0.1.94, dependent on protocol version being used.
+
+It has been reported that this module experiences some issues on solaris and ubuntu systems, so far these issues are unresolved, but seem to be related to the core of Node.js
 
 ## Synopsis ##
 
-An example of a simple server that will echo the messages received back out.
-
-		var sys = require("sys");
-		var ws = require('./lib/ws');
-		
-
-		var server = ws.createServer();
-		server.listen(8000);
-
-		server.addListener("listening", function(){
-		  sys.log("Listening for connections.");
-		});
-
-		// Handle WebSocket Requests
-		server.addListener("connection", function(conn){
-		  sys.log("<"+conn._id+"> connected");
-		  server.broadcast("<"+conn._id+"> connected");
-
-		  conn.addListener("close", function(){
-		    sys.log("<"+conn._id+"> onClose");
-		    server.broadcast("<"+conn._id+"> disconnected");
-		  });
-
-		  conn.addListener("message", function(message){
-		    sys.log("<"+conn._id + "> "+message);
-		    server.broadcast("<"+conn._id+"> "+message);
-		  });
-		});
-
-		// Handle HTTP Requests that don't UPGRADE to websockets
-		server.addListener("request", function(req, res){
-		  res.writeHead(200, {'Content-Type': 'text/plain'});
-		  res.end('We can handle normal http connections too!\n');
-		});		
-
-Coupled with a websocket client like the `example.html`, and you have a working websocket chat client (sort of.)
+An example of a simple server that will echo the messages received back out can be found in `examples/echo-server.js`, coupled with a websocket client like the `examples/client.html`, and you have a working websocket client/server.
 
 ## Server ##
 
@@ -55,18 +24,25 @@ and events that act on `http.Server` will act on `ws.Server`.  Your application 
 `ws.createServer()` and `ws.Server()` takes an options object as its only parameter. The options object has a these
 defaults:
 
-		{ version: "draft75"  // [string] Maybe be either draft75 or draft76
-		, origin: "*"         // [string | array] Any valid domain name
-		, subprotocol: null   // [string | array]
+		{ debug: false,       // Boolean:         Show debug information.
+	  , version: "auto"     // String:          Value must be either: draft75, draft76, auto
+	  , origin: "*"         // String, Array:   A match for a valid connection origin
+	  , subprotocol: null   // String, Array:   A match for a valid connection subprotocol.
 	  }
 
 After a websocket client connects to the server, the server will emit the `'connection'` event, with the `ws/connection`
-instance for the connection. This signifies that the connection has undertaken the necessary websocket handshaking and 
+instance for the connection. This means that the connection has undertaken the necessary websocket handshaking and 
 is now ready to send and receive data.
+
+**NOTE:** Currently the origin and subprotocols are not strictly checked, this will be added in future versions.
 
 ### server.listen(port, host) ###
 
 The same as the `http.Server` listen method.
+
+### server.send(client_id, message) ###
+
+Sends `message` to the client with `id` of `client_id`.
 
 ### server.broadcast(message) ###
 
@@ -102,15 +78,25 @@ Use this to handle normal http connections that won't upgrade to WebSocket.
 
 The same as the `http.Server` `stream` event.
 
-### Event: close ###
+### Event: shutdown ###
 
 `function (errno) { }`
 
-Emits when the server is closed. Currently inherited from `http.Server`
+Emits when the server is closed. Proxied from `http.Server`
+
+### Event: close ###
+
+`function(connection) { }`
+
+Emits when a websocket client's connection closes. The `connection` is an instance of `ws/connection`.
 
 ## ws/connection ##
 
 This is an instance of a client connecting to the `ws.Server`, this is similar to the `req` on a `http.Server`.
+
+### connecting.getVersion() ###
+
+Returns the websocket specification version that the connection is using.
 
 ### connection.write(data) ###
 
@@ -120,11 +106,19 @@ Publishes a message to the client.
 
 Closes the client's connection.
 
-### Event: readyStateChange ###
+### connection.reject(reason) ###
 
-`function (readyState) { }`
+Rejects a client's connection. `reason` is only used when the server is in debug mode.
 
-Emits each time the connections status changes, the codes are as follows:
+### connection.handshake() ###
+
+This carries out handshaking with a client, this method is semi-private.
+
+### Event: stateChange ###
+
+`function (state, previous_state) { }`
+
+Each time the connection's status changes this is emitted, the state codes are:
 
 		0. unknown
 		1. opening
@@ -132,15 +126,24 @@ Emits each time the connections status changes, the codes are as follows:
 		3. handshaking
 		4, connected
 		5. closed
-
-### Event: close ###
-
-`function () { }`
-
-Emits when a client connection is closed or closes.
+		
+A state of `2` should never be reached, if it is, please do let me know.
 
 ### Event: message ###
 
 `function (message) { }`
 
 Emits when a client sends a message to the server.
+
+### Event: close ###
+
+`function () { }`
+
+Emits when a connection is closes.
+
+### Event: rejected ###
+
+`function () { }`
+
+Emits when a connection is rejected by the server, usually for a bad handshake or version mismatch. This event is immediately followed by the `close` event
+

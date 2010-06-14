@@ -2,87 +2,123 @@
 <html>
   <head>
     <title>node-websocket-server test</title>
+		<style type="text/css">
+#rockbar {
+	position: fixed;
+	top: 0;
+	left: 20px;
+	background: #fff;
+	padding: 0.5em;
+	display: block;
+}
+
+#warning {
+	padding: 1em;
+	border: 2px solid red;
+}
+		</style>
   </head>
   <body>
-		<p style="padding: 1em; border: 2px solid red;">
-			<span style="color:red;">WARNING:</span> run the Spam Test at your own risk, see below for more information. <a href="#" id="spam">Run Spam Test</a><br /><br />
+		<p id="warning">
+			<strong>WARNING:</strong> run the Spam Test at your own risk, see below for more information.<br /><br />
 Spam Test: The spam test rapidly spends 1 million messages to the websocket-server at a near instant interval, as such, any browsers connected to the server at the time of a spam test may crash or freeze up. The websocket server should not crash, but this is not 100% guaranteed.<br/><br />
 The author does not take responsibility for any damage or data loss caused.</p>
-	  <a href="#" id="send">Send Something</a>
+	  <div id="rockbar">
+			<a href="#" id="send">Send Something</a> | <a href="#" id="spam">Run Spam Test</a> | <a href="#" id="close">Close Connection.</a> | <a href="#" id="open">Open Connection.</a>
+		</div>
 		<div id="log"></div>
     <script type="text/javascript">
-		// var str = "";
-		// for(var i=0, iosize = 1024*1024;i<iosize; i+=2){
-		// 	str += " d";
-		// }
-		
-		var output_log = document.getElementById("log");
-		
-		document.getElementById("send").addEventListener("click", function(){
-			if(conn){
-				setTimeout(function(){
-					conn.send("test message");
-//					output_log.innerHTML += (+new Date())+"s<br />";
-				}, 0);
-			}
-			return false;
-		}, true);
-		
-		document.getElementById("spam").addEventListener("click", function(){
-			if(conn){
-				for(var i=0; i<100000; ++i){
-					(function(n){
-					setTimeout(function(){
-						conn.send("t"+n);
-						output_log.innerHTML += (+new Date())+"s<br />";
-					}, 0);
-					})(i);
-				}
-			}
-			return false;
-		}, true);
+var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-		var conn;
-setTimeout(function(){
-		var connect = function(){
-			conn = new WebSocket("ws://localhost:8000/test");
-		};
-
-		if(window["WebSocket"]){
-			console.log("Connecting...");
-			connect();
-			console.log("Started Connection.");	
-		} else {
-			console.log("Not Supported");
-		}
-		
-		conn.onmessage = function(evt){
-			output_log.innerHTML += (+new Date())+"r: "+evt.data+"<br />";
-		};
-
-		conn.onclose = function(){
-			output_log.innerHTML += (+new Date())+": closed<br />";
-		};
-
-		conn.onopen = function(){
-			output_log.innerHTML += (+new Date())+": opened<br />";
-		};
-}, 1000);
-
-function rapidFire(){
-	var i = 0, o = 0;
-	var interval = setInterval(function(){
-		var r_conn = new WebSocket("ws://localhost:8000/");
-		console.log(++i, o);
-		r_conn.onopen = function(){
-			++o;
-		};
-		if(i == 1000){
-			clearInterval(interval);
-		}
-	}, 0);
+function pad(n) {
+  return n < 10 ? '0' + n.toString(10) : n.toString(10);
 }
-    </script>
+
+function timestamp() {
+  var d = new Date();
+  return [
+    d.getDate(),
+    months[d.getMonth()],
+    [ pad(d.getHours())
+    , pad(d.getMinutes())
+    , pad(d.getSeconds())
+    , (d.getTime() + "").substr( - 4, 4)
+    ].join(':')
+  ].join(' ');
+};
+
+
+function scrollToBottom() {
+    window.scrollBy(0, document.body.scrollHeight - document.body.scrollTop);
+};
+
+function log(data){
+  output_log.innerHTML += timestamp()+": "+data+"<br />";
+  scrollToBottom();
+}
+
+
+var conn;
+var output_log = document.getElementById("log");
+var connect = function() {
+  if (window["WebSocket"]) {
+    conn = new WebSocket("ws://localhost:8000/test");
+    conn.onmessage = function(evt) {
+      log(evt.data);
+    };
     
+    conn.onclose = function() {
+      log("closed");
+    };
+
+    conn.onopen = function() {
+      log("opened");
+    };
+  }
+};
+
+document.getElementById("send").addEventListener("click", function(e) {
+  if (conn) {
+    setTimeout(function() {
+      conn.send("test message");
+    }, 0);
+  }
+  e.preventDefault();
+  return false;
+}, false);
+
+document.getElementById("spam").addEventListener("click", function() {
+  if (conn) {
+    for (var i = 0; i < 100000; ++i) {
+      (function(n) {
+        setTimeout(function() {
+          conn.send("t" + n);
+        }, 0);
+      })(i);
+    }
+  }
+  return false;
+}, true);
+
+document.getElementById("close").addEventListener("click", function(e) {
+  if (conn) {
+    conn.close();
+    conn = false;
+  }
+  e.preventDefault();
+  return false;
+}, false);
+
+document.getElementById("open").addEventListener("click", function(e) {
+  if (!conn) {
+    connect();
+  }
+  e.preventDefault();
+  return false;
+}, false);
+
+window.onload = connect;
+
+    </script>
   </body>
 </html>
