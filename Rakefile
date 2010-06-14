@@ -41,9 +41,9 @@ namespace :write do
       :name => "websocket-server",
       :version => @version,
       :author => "Micheil Smith <micheil@brandedcode.com>",
-      :description => "A WebSocket server written in low-level node.js, 90-100% spec compatible.",
+      :description => "A WebSocket Server for node.js, 90-100% spec compatible.",
       :main => "./lib/ws",
-      :engines => { :node => ">=0.1.94-0" },
+      :engines => { :node => ">=0.1.98-0" },
       :licenses => [{ :type => "MIT", :url => "./LICENSE.md" }],
       :repository => {
         :type => "git",

@@ -1,5 +1,5 @@
-{ "version": "1.1.00"
-, "description": "A WebSocket server written in low-level node.js, 90-100% spec compatible."
+{ "version": "1.2.00"
+, "description": "A WebSocket Server for node.js, 90-100% spec compatible."
 , "repository": { "type": "git"
 , "url": "http://github.com/miksago/node-websocket-server.git"
 }
@@ -9,5 +9,5 @@
 , "author": "Micheil Smith <micheil@brandedcode.com>"
 , "licenses": [{ "type": "MIT", "url": "./LICENSE.md" }]
 , "name": "websocket-server"
-, "engines": { "node": ">=0.1.94-0"}
+, "engines": { "node": ">=0.1.98-0"}
 }
