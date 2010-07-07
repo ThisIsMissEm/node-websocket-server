@@ -69,20 +69,20 @@ server.addListener("listening", function(){
 
 // Handle WebSocket Requests
 server.addListener("connection", function(conn){
-  log("opened connection: "+conn._id);
+  log("opened connection: "+conn.id);
   
-  server.send(conn._id, "Connected as: "+conn._id);
-  server.broadcast("<"+conn._id+"> connected");
+  server.send(conn.id, "Connected as: "+conn.id);
+  conn.broadcast("<"+conn.id+"> connected");
   
   conn.addListener("message", function(message){
-    log("<"+conn._id+"> "+message);
-    server.broadcast("<"+conn._id+"> "+message);
+    log("<"+conn.id+"> "+message);
+    conn.broadcast("<"+conn.id+"> "+message);
   });
 });
 
 server.addListener("close", function(conn){
-  log("closed connection: "+conn._id);
-  server.broadcast("<"+conn._id+"> disconnected");
+  log("closed connection: "+conn.id);
+  conn.broadcast("<"+conn.id+"> disconnected");
 });
 
 server.listen(8000);
