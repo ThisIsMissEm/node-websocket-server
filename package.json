@@ -1,4 +1,4 @@
-{ "version": "1.2.00"
+{ "version": "1.3.00"
 , "description": "A WebSocket Server for node.js, 90-100% spec compatible."
 , "repository": { "type": "git"
 , "url": "http://github.com/miksago/node-websocket-server.git"
