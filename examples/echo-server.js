@@ -1,5 +1,8 @@
-var sys = require("sys");
-var ws = require('../lib/ws');
+var sys = require("sys")
+  , fs = require("fs")
+  , path = require("path")
+  , http = require("http")
+  , ws = require('../lib/ws');
 
 /*-----------------------------------------------
   logging:
@@ -27,13 +30,38 @@ function log(msg) {
   sys.puts(timestamp() + ' - ' + msg.toString());
 };
 
+function serveFile(req, res){
+  if( req.url.indexOf("favicon") > -1 ){
+    log("HTTP: inbound request, served nothing, (favicon)");
+    
+    res.writeHead(200, {'Content-Type': 'image/x-icon'});
+    res.end("");
+  } else {
+    log("HTTP: inbound request, served client.html");
+    
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    fs.createReadStream( path.normalize(path.join(__dirname, "client.html")), {
+      'flags': 'r',
+      'encoding': 'binary',
+      'mode': 0666,
+      'bufferSize': 4 * 1024
+    }).addListener("data", function(chunk){
+      res.write(chunk, 'binary');
+    }).addListener("close",function() {
+      res.end();
+    });
+  }
+};
 
 /*-----------------------------------------------
   Spin up our server:
 -----------------------------------------------*/
+var httpServer = http.createServer(serveFile);
+
+
 var server = ws.createServer({
   debug: true
-});
+}, httpServer);
 
 server.addListener("listening", function(){
   log("Listening for connections.");
@@ -57,16 +85,10 @@ server.addListener("close", function(conn){
   server.broadcast("<"+conn._id+"> disconnected");
 });
 
+server.listen(8000);
 // Handle HTTP Requests:
-server.addListener("request", function(req, res){
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('We can handle normal http connections too!\n');
-});
 
-server.addListener("shutdown", function(conn){
-  // never actually happens, because I never tell the server to shutdown.
-  log("Server shutdown");
-});
+// This will hijack the http server, if the httpserver doesn't 
+// already respond to http.Server#request
 
-
-server.listen(8000, "localhost");
+// server.addListener("request", serveFile);
