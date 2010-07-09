@@ -57,7 +57,7 @@ function serveFile(req, res){
   Spin up our server:
 -----------------------------------------------*/
 var httpServer = http.createServer(serveFile);
-
+var connections = 0;
 
 var server = ws.createServer({
   debug: true
@@ -69,20 +69,30 @@ server.addListener("listening", function(){
 
 // Handle WebSocket Requests
 server.addListener("connection", function(conn){
-  log("opened connection: "+conn.id);
+//  log("opened connection: "+conn.id);
   
-  server.send(conn.id, "Connected as: "+conn.id);
-  conn.broadcast("<"+conn.id+"> connected");
+//  server.manager.metadata(conn.id, "messages", 0);
+  log(connections++);
+//  server.send(conn.id, "Connected as: "+conn.id);
+//  conn.broadcast("<"+conn.id+"> connected");
   
   conn.addListener("message", function(message){
-    log("<"+conn.id+"> "+message);
-    conn.broadcast("<"+conn.id+"> "+message);
+//    log("<"+conn.id+"> "+message);
+    server.broadcast("<"+conn.id+"> "+message);
   });
+  
+  // var timer = setInterval(function(){
+  //   if(conn._state != 4){
+  //     clearInterval(timer); 
+  //   } else {
+  //     conn.write("You have sent: "+server.manager.metadata(conn.id, "messages")+" messages");
+  //   }
+  // }, 1000);
 });
 
 server.addListener("close", function(conn){
-  log("closed connection: "+conn.id);
-  conn.broadcast("<"+conn.id+"> disconnected");
+//  log("closed connection: "+conn.id);
+//  conn.broadcast("<"+conn.id+"> disconnected");
 });
 
 server.listen(8000);

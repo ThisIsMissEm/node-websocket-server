@@ -58,13 +58,23 @@ function log(data){
 }
 
 
-var conn;
+var conn, recvd, connections = 0;
 var output_log = document.getElementById("log");
 var connect = function() {
   if (window["WebSocket"]) {
-    conn = new WebSocket("ws://localhost:8000/test");
+    recvd = 0;
+    conn = new WebSocket("ws://brandedcode.com:8000/test");
     conn.onmessage = function(evt) {
-      log(evt.data);
+//      log(evt.data);
+      
+      conn.close();
+      log(connections++);
+      connect();
+      
+      if(recvd == 0){
+        conn.id = parseInt(evt.data.match(/\: ([0-9]+)/)[1], 10);
+      }
+      recvd++;
     };
     
     conn.onclose = function() {
@@ -73,6 +83,7 @@ var connect = function() {
 
     conn.onopen = function() {
       log("opened");
+      conn.send("test");
     };
   }
 };
@@ -81,6 +92,7 @@ document.getElementById("send").addEventListener("click", function(e) {
   if (conn) {
     setTimeout(function() {
       conn.send("test message");
+      log("<"+conn.id+"> "+"test message");
     }, 0);
   }
   e.preventDefault();
@@ -93,6 +105,7 @@ document.getElementById("spam").addEventListener("click", function() {
       (function(n) {
         setTimeout(function() {
           conn.send("t" + n);
+          log("<"+conn.id+"> "+"t "+n);
         }, 0);
       })(i);
     }
