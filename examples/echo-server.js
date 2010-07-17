@@ -32,12 +32,12 @@ function log(msg) {
 
 function serveFile(req, res){
   if( req.url.indexOf("favicon") > -1 ){
-    log("HTTP: inbound request, served nothing, (favicon)");
+    log("HTTP: "+req.socket.remotePort+", inbound request, served nothing, (favicon)");
     
-    res.writeHead(200, {'Content-Type': 'image/x-icon'});
+    res.writeHead(200, {'Content-Type': 'image/x-icon', 'Connection': 'close', 'Content-Length': '0'});
     res.end("");
   } else {
-    log("HTTP: inbound request, served client.html");
+    log("HTTP: "+req.socket.remotePort+", inbound request, served client.html");
     
     res.writeHead(200, {'Content-Type': 'text/html'});
     fs.createReadStream( path.normalize(path.join(__dirname, "client.html")), {
