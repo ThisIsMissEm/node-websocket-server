@@ -10,7 +10,7 @@ server.addListener("listening", function(){
 // Handle WebSocket Requests
 server.addListener("connection", function(conn){
   conn.send("Connection: "+conn.id);
-  
+
   conn.addListener("message", function(message){
     conn.broadcast("<"+conn.id+"> "+message);
   });

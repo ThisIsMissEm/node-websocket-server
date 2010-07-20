@@ -35,13 +35,13 @@ var conn;
 $(function(){
   var history = [], idx = 0;
   $("#message").focus();
-  
+
   $(window).bind("focus", function(){
     $("#message").focus();
   });
-  
+
   var logpanel = $("#log");
-  
+
   function sendmsg(){
     if(conn && conn.readyState == 1){
       var msg = $("#message").val();
@@ -51,17 +51,17 @@ $(function(){
       $("#message").val("");
     }
   };
-  
+
   $("#sendbtn").bind("click", function(){
     sendmsg();
   });
-  
+
   $("#message").bind("keydown", function(e){
     if(e.which == 13){
       sendmsg();
     }
   })
-  
+
   function scrollToBottom() {
       window.scrollBy(0, document.body.scrollHeight - document.body.scrollTop);
   };
@@ -73,15 +73,15 @@ $(function(){
 
   if (window["WebSocket"]) {
     conn = new WebSocket("ws://"+document.location.host+"/");
-  
+
     conn.onmessage = function(evt) {
       log(evt.data);
     };
-    
+
     conn.onclose = function() {
       log("** you have been disconnected");
     };
-  
+
     conn.onopen = function(){
       log("** you have been connected");
       $("#sendbtn").removeAttr("disabled");

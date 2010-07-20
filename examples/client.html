@@ -66,17 +66,17 @@ var connect = function() {
     conn = new WebSocket("ws://"+(document.location.host != "" ? document.location.host : "localhost:8000")+"/test");
     conn.onmessage = function(evt) {
       log(evt.data);
-      
+
       // conn.close();
       // log(connections++);
       // connect();
-      
+
       // if(recvd == 0){
       //   conn.id = parseInt(evt.data.match(/\: ([0-9]+)/)[1], 10);
       // }
       // recvd++;
     };
-    
+
     conn.onclose = function() {
       log("closed");
     };
