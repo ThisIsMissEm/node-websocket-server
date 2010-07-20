@@ -29,7 +29,9 @@ var httpServer = http.createServer(function(req, res){
 });
 
 
-var server = ws.createServer(httpServer);
+var server = ws.createServer({
+  server: httpServer
+});
 
 server.addListener("listening", function(){
   sys.log("Listening for connections.");
