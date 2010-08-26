@@ -3,11 +3,44 @@
 <head>
   <title>Node WebSocket Server</title>
   <link rel="stylesheet" media="all" href="style.css" type="text/css">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script type="text/javascript" src="http://hashgrid.com/hashgrid.js"></script>
+  <style type="text/css">
+  
+  /**
+   * Grid
+   */
+  #grid{
+      /* Dimensions - same width as your grid with gutters */
+      width: 980px;
+
+      /* Grid (left-aligned) */
+      position: absolute;
+      top: 0;
+      left: 0;
+  }
+
+  /**
+   * Horizontal grid lines, defined by your base line height
+   *
+   * Remember, the CSS properties that define the box model:
+   * visible height = height + borders + margins + padding
+   */
+  #grid div.horiz{
+
+      /* 22px line height */
+      height: 21px;
+      border-bottom: 1px dotted #aaa;
+      margin: 0;
+      padding: 0;
+
+  }
+  </style>
 </head>
 <body>
   <div id="container">
     <h1>Node WebSocket Server</h1>
-    
+
     <p>
       <a class="octothorpe" href="#s1-p1" id="s1-p1">#</a>
       <strong>Node WebSocket Server</strong> is a near specification compliant implementation of the server-side <a href="" title="View the specification">WebSocket Protocol</a>. It is built on top of <a href="http://nodejs.org" title="Node.js' project website">Node.js</a> as a third-party module, and is designed to support various versions of the WebSocket protocol &ndash; which is currently still an <abbr title="Internet Engineering Task Force">IETF</abbr> Draft.
@@ -16,13 +49,15 @@
       <a class="octothorpe" href="#s1-p2" id="s1-p2">#</a>
       The WebSockets protocol is a way of the browser providing a bi-directional, full-duplex communication channel which is accessible through the <abbr title="Document Object Model">DOM</abbr>.
     </p>
-    
+
+    <div id="toc"></div>
+
     <h2>Installation</h2>
     <p>
       <a class="octothorpe" href="#s2-p1" id="s2-p1">#</a>
-      Node WebSocket Server can be easily installed via NPM or cloned from github. The server currently requires Node.js to be compiled with SSL support (which is by default enabled, if it's available), the reason for the dependency on SSL being available in Node.js is to enable Draft 76 handshaking and <a href="" title="Read more about Security and WebSockets">Secure WebSocket</a> connections.
+      Node WebSocket Server can be easily installed via NPM or cloned from github. This module requires Node to be compiled with SSL support (which is by default enabled, if it's available), the reason for the dependency on SSL being available in Node.js is to enable Draft 76 handshaking and <a href="" title="Read more about Security and WebSockets">Secure WebSocket</a> connections.
     </p>
-    <h3>Installing from Node Package Manager</h3>
+    <h3>With Node Package Manager</h3>
     <p>
       <a class="octothorpe" href="#s3-p1" id="s3-p1">#</a>
       For the latest stable build:
@@ -33,8 +68,8 @@
       Or, alternatively, you can run with the latest bleeding edge build with:
     </p>
     <pre class="code">npm install websocket-server@latest</pre>
-    
-    <h3>Installation as a git submodule:</h3>
+
+    <h3>With git submodules</h3>
     <p>
       <a class="octothorpe" href="#s4-p1" id="s4-p1">#</a>
       Installing Node WebSocket Server as a git submodule is a recommended route for installing if you plan on deploying your application and don't want the hassle of having to check that both production and development environments are running the same module versions. Another benefit of installing as a submodule, is that the websocket server is then packaged with your code.
@@ -61,7 +96,7 @@ $ git commit -m "Adding websocket-server submodule"
       <a class="octothorpe" href="#s4-p4" id="s4-p4">#</a>
       For your collaborators, they can simply do a <code>git pull</code> then a <code>git submodule init</code> then a <code>git submodule update</code>. You can learn more about Git Submodules from <a href="http://progit.org/book/ch6-6.html" title="Read Chapter 6.6 of the Pro Git book on their website.">Chapter 6.6 of the Pro Git book</a>, which you can read online.
     </p>
-    
+
     <h2>Contributing</h2>
     <p>
       <a class="octothorpe" href="#s5-p1" id="s5-p1">#</a>
@@ -74,9 +109,9 @@ $ git commit -m "Adding websocket-server submodule"
       <li>Commit, do not mess with rakefile, version, or history.</li>
       <li>Send me a pull request. Bonus points for topic branches.</li>
     </ol>
-    
+
     <h2>Basic Usage</h2>
-    
+
     <p>
       <a class="octothorpe" href="#s6-p1" id="s6-p1">#</a>
       The <abbr title="Application Programming Interface">API</abbr> to Node WebSocket Server is fairly simple, and stays consistent with the Node.js API's you may already be familiar with. Firstly, there are three main parts to the server, these are: The constructor, the connection instance, and the connection manager. Each of these parts interact with each other, and end up providing a clean API with which you write your server-side logic.
@@ -103,12 +138,12 @@ server.<code class="nf">listen</code>(<code class="m">8080</code>);
       <a class="octothorpe" href="#s6-p3" id="s6-p3">#</a>
       So what does the above code <em>actually</em> do? First, we need to require in the websocket-server library &mdash; If you have installed this module via <abbr title="Node Package Manager">NPM</abbr> then you can require it exactly like the above does. Next, we create a server instance, by default, this server will automatically choose which version of the protocol to use when communicating with the client and it will also act as a standard <code><a href="" title="View the documentation from Node.js on http.Server">http.Server</a></code> instance.
     </p>
-    
+
     <p>
       <a class="octothorpe" href="#s6-p4" id="s6-p4">#</a>
       After we have a instance of <code>ws.Server</code>, which <code>ws.createServer</code> returns, we can proceed to add event listeners to the various events it emits. We use the same API as that which node's <a href="http://nodejs.org/api.html" title="Node.js's documentation on Event.EventEmitter">Event.EventEmitter</a> provides to do so. In this case, we only bind to one event on the server, the <a href="#s5-p2" title="Read the documentation on the Connection Event">Connection</a> event. Each time a user successfully connects to the server the connection is emitted. We then watch for the <code>message</code> event on the emitted connection, this event occurs every time a user sends a message to the server.
     </p>
-    
+
     <h2>API Documentation</h2>
     <p>
       <a class="octothorpe" href="#s7-p1" id="s7-p1">#</a>
@@ -118,7 +153,7 @@ server.<code class="nf">listen</code>(<code class="m">8080</code>);
       <li>The connection instance</li>
       <li>The connection manager</li>
     </ol>
-    
+
     <h3>
       Module Methods
     </h3>
@@ -140,29 +175,33 @@ server.<code class="nf">listen</code>(<code class="m">8080</code>);
           <dt>debug:</dt>
           <dd>Toggles the printing of debug messages from each component to <code>stdout</code>.</dd>
           <dd><code class="pre">Type:    <span class="k">Boolean</span></code></dd>
-          
+
           <dt>version:</dt>
           <dd>The WebSocket protocol version the server will accept connections from, connections not matching this version will be <strong>rejected</strong>.</dd>
           <dd><code class="pre">Type:    <span class="k">String</span></code></dd>
           <dd><code class="pre">Values:  <span class="s">"auto"</span>, <span class="s">"draft76"</span>, <span class="s">"draft75"</span></code></dd>
           <dd><code class="pre">Default: <span class="s">"auto"</span></code></dd>
-          
+
           <dt>storage:</dt>
-          <dd>Toggles the creation of a simple key/value store on each connection.</dd>
-          <dd><code class="pre">Type:    <span class="k">Boolean</span></code></dd>
-          
+          <dd>Defines a storage model to be implemented as a member of each connection. If the value is false, no storage will be created. If the value is true, then an in memory store will be used. The value may also be an Object or Constructor, see the section on <a href="#s15-p1" title="Read the documentation on Connection Storage">Connection.storage</a> for more information.</dd>
+          <dd><code class="pre">Type:    <span class="k">Boolean, Object, Constructor</span></code></dd>
+
+          <dt>server:</dt>
+          <dd>Defines an existing <a href="http://nodejs.org/api.html#http-server-156" title="See the description of http.Server on Node.js documentation" class="pre">http.Server</a> instance for the WebSocket Server to bind to.</dd>
+          <dd><code class="pre">Type:    <span class="k">http.Server</span></code></dd>
+
+<!--    Handle with http.Server.setSecure and such.
           <dt>secure:</dt>
-          <dd>Toggles the usage of SSL, equivalent to calling <code><a href="" title="Documentation on server.setSecure">server.setSecure()
-</a></code></dd>
+          <dd>Toggles the usage of SSL, equivalent to calling <code><a href="" title="Documentation on server.setSecure">server.setSecure()</a></code></dd>
           <dd><code class="pre">Type:    <span class="k">Boolean</span></code></dd>
           <dd><code class="pre">Note:    <span class="e">This is not implemented</span></code></dd>
-          
-          
+-->
+
           <dt>origin:</dt>
           <dd>A string or array of domains from which the server should accept connections.</dd>
           <dd><code class="pre">Type:    <span class="k">String, String[]</span></code></dd>
           <dd><code class="pre">Note:    <span class="e">This is not fully implemented</span></code></dd>
-          
+
           <dt>subprotocol:</dt>
           <dd>A string or array of subprotocols which the server will use when communicating with clients. The server and client should negotiate which subprotocol to use if an Array of strings is passed.</dd>
           <dd><code class="pre">Type:    <span class="k">String, String[]</span></code></dd>
@@ -170,24 +209,10 @@ server.<code class="nf">listen</code>(<code class="m">8080</code>);
         </dl>
       </dd>
     </dl>
-    
+
     <h3>Server Instances</h3>
     <p>Throughout this section, the variable <code>server</code> is an instant of a <a href="#s8-p2" title="Documentation on the ws.Server constructor" class="pre">ws.Server</a>.</p>
     <dl>
-      <dt><code>server.<span class="nf">addListener</span>( event, callback )</code></dt>
-      <dd>Adds a listener for the specified event that is emitted from the server.</dd>
-      <dd><code class="pre">event:    <span class="k">String</span></code></dd>
-      <dd><code class="pre">callback: <span class="k">Function</span></code></dd>
-      
-      <dt><code>server.<span class="nf">removeListener</span>( event, callback )</code></dt>
-      <dd>Remove a listener from the specified event that is emitted from the server.</dd>
-      <dd><code class="pre">event:    <span class="k">String</span></code></dd>
-      <dd><code class="pre">callback: <span class="k">Function</span></code></dd>
-      
-      <dt><code>server.<span class="nf">removeListener</span>( event, callback )</code></dt>
-      <dd>Removes all listeners from the specified event that is emitted from the server.</dd>
-      <dd><code class="pre">event:    <span class="k">String</span></code></dd>
-
       <dt><code>server.<span class="nf">send</span>( client_id, message )</code></dt>
       <dd>Sends <code class="c">message</code> to the client with <code class="c">id </code> of <code class="c">client_id</code>.</dd>
       <dd><code class="pre">client_id:  <span class="k">Integer</span></code></dd>
@@ -196,12 +221,31 @@ server.<code class="nf">listen</code>(<code class="m">8080</code>);
       <dt><code>server.<span class="nf">broadcast</span>( message )</code></dt>
       <dd>Sends <code class="c">message</code> to all connected clients.</dd>
       <dd><code class="pre">message:    <span class="k">String</span></code></dd>
-      
+
       <dt><code>server.<span class="nf">listen</span>( port, [host] )</code></dt>
       <dd>Same as the <a href="http://nodejs.org/api.html#http-server-156" title="See the description of http.Server on Node.js documentation" class="pre">http.Server</a> listen method.</dd>
 
       <dt><code>server.<span class="nf">close</span>()</code></dt>
       <dd>Same as the <a href="http://nodejs.org/api.html#http-server-156" title="See the description of http.Server on Node.js documentation" class="pre">http.Server</a> close method.</dd>
+
+      <h4>Inherited Methods</h4>
+
+      <dl>
+        <dt><code>server.<span class="nf">addListener</span>( event, callback )</code></dt>
+        <dd>Adds a listener for the specified event that is emitted from the server.</dd>
+        <dd><code class="pre">event:    <span class="k">String</span></code></dd>
+        <dd><code class="pre">callback: <span class="k">Function</span></code></dd>
+
+        <dt><code>server.<span class="nf">removeListener</span>( event, callback )</code></dt>
+        <dd>Remove a listener from the specified event that is emitted from the server.</dd>
+        <dd><code class="pre">event:    <span class="k">String</span></code></dd>
+        <dd><code class="pre">callback: <span class="k">Function</span></code></dd>
+
+        <dt><code>server.<span class="nf">removeAllListeners</span>( event )</code></dt>
+        <dd>Removes all listeners from the specified event that is emitted from the server.</dd>
+        <dd><code class="pre">event:    <span class="k">String</span></code></dd>
+      </dl>
+
     </dl>
     <h4>Events</h4>
     <p>A Server instance can emit various events during it's life cycle. The WebSocket Server will also emit each of the <a href="http://nodejs.org/api.html#http-server-156" title="See the description of http.Server on Node.js documentation" class="pre">http.Server</a> events, except "connection" and "close" which are used by the WebSocket Server. These events are described as follows:</p>
@@ -209,20 +253,114 @@ server.<code class="nf">listen</code>(<code class="m">8080</code>);
       <dt class="pre">connection</dt>
       <dd>Emitted whenever a client connects to the server successfully.</dd>
       <dd><code class="pre">client:  <a href="#" title="View the documentation on a Connection Instance" class="k">Connection</a></code></dd>
-      
+
       <dt class="pre">close</dt>
       <dd>Emitted whenever a client disconnects from the server.</dd>
       <dd><code class="pre">client:  <a href="#" title="View the documentation on a Connection Instance" class="k">Connection</a></code></dd>
-      
+
       <dt class="pre">shutdown</dt>
       <dd>Emitted when the server is closed, this event is echoed from <a href="http://nodejs.org/api.html#http-server-156" title="See the description of http.Server on Node.js documentation" class="pre">http.Server</a></dd>
     </dl>
-    
+
     <h3>Connection Instances</h3>
     <p>
       <a class="octothorpe" href="#s10-p1" id="s10-p1">#</a>
       Each time a client connects to the <code>server</code>, a new connection instance is created and registered with the connection manager.</p>
     </p>
+    <dl>
+      <dt><code>connection.<span class="nf">id</span></code></dt>
+      <dd>...</dd>
+
+      <dt><code>connection.<span class="nf">state</span></code></dt>
+      <dd>...</dd>
+
+      <dt><code>connection.<span class="nf">version</span></code></dt>
+      <dd>...</dd>
+
+      <dt><code>connection.<span class="nf">headers</span></code></dt>
+      <dd>...</dd>
+
+      <dt><code>connection.<span class="nf">storage</span></code></dt>
+      <dd>...</dd>
+    </dl>
+
+    <h4>Methods</h4>
+
+    <dl>
+      <dt><code>connection.<span class="nf">send</span>( data )</code></dt>
+      <dd>Sends <code>data</code> from the current connection to all other connections on the server, including the sending connection. This method is aliased as <code>connection.write</code></dd>
+      <dd><code class="pre">data:    <span class="k">String</span></code></dd>
+
+      <dt><code>connection.<span class="nf">broadcast</span>( data )</code></dt>
+      <dd>Sends <code>data</code> from the current connection to all other connections on the server, excluding the sending connection.</dd>
+      <dd><code class="pre">data:    <span class="k">String</span></code></dd>
+
+      <dt><code>connection.<span class="nf">close</span>()</code></dt>
+      <dd>Closes the current connection and emits the <code>"close"</code>.</dd>
+
+      <dt><code>connection.<span class="nf">reject</span>( [reason] )</code></dt>
+      <dd>Emits the <code>"rejected"</code> event, then proceeds to close the connection using <code>connection.close()</code>. The <code>reason</code> is used only for logging purposes.</dd>
+      <dd><code class="pre">reason:    <span class="k">String</span></code></dd>
+    </dl>
+
+    <h4>Inherited Methods</h4>
+
+    <dl>
+      <dt><code>connection.<span class="nf">addListener</span>( event, callback )</code></dt>
+      <dd>Adds a listener for the specified event that is emitted from the connection.</dd>
+      <dd><code class="pre">event:    <span class="k">String</span></code></dd>
+      <dd><code class="pre">callback: <span class="k">Function</span></code></dd>
+
+      <dt><code>connection.<span class="nf">removeListener</span>( event, callback )</code></dt>
+      <dd>Remove a listener from the specified event that is emitted from the connection.</dd>
+      <dd><code class="pre">event:    <span class="k">String</span></code></dd>
+      <dd><code class="pre">callback: <span class="k">Function</span></code></dd>
+
+      <dt><code>connection.<span class="nf">removeAllListeners</span>( event )</code></dt>
+      <dd>Removes all listeners from the specified event that is emitted from the connection.</dd>
+      <dd><code class="pre">event:    <span class="k">String</span></code></dd>
+    </dl>
+    
+    <h4>Events</h4>
+    <p>...</p>
+    <dl>
+      <dt class="pre">close</dt>
+      <dd>Emitted whenever a client or server closes the connection.</dd>
+      
+      <dt class="pre">rejected</dt>
+      <dd>Emitted whenever the server rejects the connection.</dd>
+      
+      <dt class="pre">message: function( data )</dt>
+      <dd>Emitted whenever a client sends a message to the server successfully.</dd>
+      
+      <dt class="pre">stateChange: function( new_state, old_state )</dt>
+      <dd>Emitted whenever the internal connection status changes, this equates to the various of the Connection life-cycle.</dd>
+            
+    </dl>
+      
+    <h3>Manager Instances</h3>
+    <p>
+      <a class="octothorpe" href="#s10-p1" id="s10-p1">#</a>
+      ...
+    </p>
+    <dl>
+      <dt><code>server.manager.<span class="nf">length</span></code></dt>
+      <dd>Number of currently attached connections. This property is not writable, only readable.</dd>
+
+      <dt><code>server.manager.<span class="nf">find</span>( id, callback, [thisArg] )</code></dt>
+      <dd>Finds the Connection Instance with the given <code>id</code>. If a match is found, the <code>call</code> property of <code>callback</code> is called with <code>thisArg</code> as the value of <strong>this</strong>, with the only argument being the pointer to the Connection Instance that was matched.</dd>
+
+      <dt><code>server.manager.<span class="nf">forEach</span>( callback, [thisArg] )</code></dt>
+      <dd>... description ...</dd>
+
+      <dt><code>server.manager.<span class="nf">map</span>( callback, [thisArg] )</code></dt>
+      <dd>... description ...</dd>
+
+      <dt><code>server.manager.<span class="nf">filter</span>( callback, [thisArg] )</code></dt>
+      <dd>... description ...</dd>
+    </dl>
+
+    <h2>Further Reading</h2>
   </div>
 </body>
 </html>

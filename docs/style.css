@@ -2,8 +2,8 @@
 body {
 //  font-family: "Helvetica Neue", Helvetica, FreeSans, Arial, sans-serif;
   font-family: Georgia, FreeSerif, Times, serif;
-  font-size: 0.95em;
-  line-height: 1.4em;
+  font-size: 0.9375em;
+  line-height: 1.4667em;
   color: #222;
   margin: 0; padding: 0;
 }
@@ -29,25 +29,33 @@ abbr {
 }
 
 p {
-  margin: 0 0 15px 0;
+  margin: 0 0 1.4667em 0;
   position: relative;
   text-rendering: optimizeLegibility;
 }
 
 ol, ul, dl {
-  margin: 0 0 15px 0;
+  margin: 0 0 1em 0;
   padding: 0;
 }
 
-dl dt { position: relative;   margin: 1.5em 0 0.15em;}
+ul, ol {
+  margin-left: 2em;
+}
+
+
+dl dt {
+  position: relative;
+  margin: 1.5em 0 0;
+}
 
 dl dd {
   position: relative;
-  margin: 0 15px 0;
+  margin: 0 1em 0;
 }
 
-dl ul, dl ol {
-  margin-left: 2em;
+dd + dt.pre {
+  margin-top: 1.6em;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -58,28 +66,30 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 2.25em;
-  line-height: 1.4em;
-  margin: 1em 0 1em;
+  font-size: 2.55em;
+  line-height: 1.375em;
+  margin: 1.25em -0.5em 1.3em;
+  padding: 0 0.5em 0.225em;
+  border-bottom: 1px solid #ccc;
 }
 
 h2 {
   font-size: 1.8em;
-  line-height: 1.4em;
-  margin: 1.5em 0 0.25em;
+  line-height: 1.227em;
+  margin: 2.125em 0 0.75em;
   font-style: italic;
 }
 
 h3 {
   font-size: 1.6em;
-  line-height: 1.4em;
-  margin: 2em 0 0.25em;
+  line-height: 1.0909em;
+  margin: 1.6em 0 1em;
 }
 
 h4 {
-  font-size: 1.2em;
-  line-height: 1.4em;
-  margin: 2em 0 0.25em;
+  font-size: 1.3em;
+  line-height: 1.1282em;
+  margin: 2.2em 0 1.25em;
 }
 
 h5 {
@@ -89,28 +99,33 @@ h5 {
 
 h6 {
   font-size: 1em;
-  line-height: 1.4em;
+  line-height: 1.4667em;
 }
 
   pre, tt, code {
-    font-size: 0.9em;
-    line-height: 1.4em;
+    font-size: 0.95em;
+    line-height: 1.5438em;
     font-family: Monaco, Consolas, "Lucida Console", monospace;
     margin: 0; padding: 0;
   }
   
   .pre {
     font-family: Monaco, Consolas, "Lucida Console", monospace;
-    line-height: 1.4em;
+    line-height: 1.5438em;
     font-size: 0.95em;
   }
 
   pre {
-    padding: 1.5em 1.6em 1.6em 1.2em;
+    padding: 2em 1.6em 2em 1.2em;
     vertical-align: top;
-    background: #f7f7f7;
-    border: 1px solid #eee;
-    border-width: 1px 1px 1px 6px
+    background: #f8f8f8;
+    border: 1px solid #e8e8e8;
+    border-width: 1px 1px 1px 6px;
+    margin: -0.5em 0 1.1em;
+  }
+  
+  pre + h3 {
+    margin-top: 2.225em;
   }
 
 code.pre {
@@ -120,7 +135,7 @@ code.pre {
 #container {
   position: relative;
   padding: 6em 6em 1200px;
-  width: 48em;
+  width: 50em;
   text-align: justify;
 }
 
@@ -161,9 +176,6 @@ code.pre {
         #jump_page .source:first-child {
         }
 
-pre {
-  margin: 15px 0 15px;
-}
 p tt, p code {
   background: #f8f8ff;
   border: 1px solid #dedede;
