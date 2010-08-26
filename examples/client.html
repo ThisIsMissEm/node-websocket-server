@@ -63,7 +63,9 @@ var output_log = document.getElementById("log");
 var connect = function() {
   if (window["WebSocket"]) {
     recvd = 0;
-    conn = new WebSocket("ws://"+(document.location.host != "" ? document.location.host : "localhost:8000")+"/test");
+    //host = (document.location.host != "" ? document.location.host : "localhost:8000");
+    host = "localhost";
+    conn = new WebSocket("wss://"+host+"/test");
     conn.onmessage = function(evt) {
       log(evt.data);
 
@@ -76,7 +78,11 @@ var connect = function() {
       // }
       // recvd++;
     };
-
+    
+    conn.onerror = function() {
+      log("error", arguments);
+    };
+    
     conn.onclose = function() {
       log("closed");
     };

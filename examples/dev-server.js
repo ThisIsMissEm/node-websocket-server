@@ -63,10 +63,12 @@ function serveFile(req, res){
 -----------------------------------------------*/
 var httpServer = http.createServer(serveFile);
 
+
 var server = ws.createServer({
   debug: true,
-  useStorage: true
-}, httpServer);
+  useStorage: true,
+  server: httpServer
+});
 
 server.addListener("listening", function(){
   log("Listening for connections.");
@@ -75,6 +77,7 @@ server.addListener("listening", function(){
 // Handle WebSocket Requests
 server.addListener("connection", function(conn){
   conn.send("Connection: "+conn.id);
+  conn.broadcast("<"+conn.id+"> connected");
   conn.addListener("message", function(message){
     conn.broadcast("<"+conn.id+"> "+message);
 //    conn.storage.incr("messages");
