@@ -1,8 +1,11 @@
 var sys = require("sys")
   , fs = require("fs")
-  , path = require("path")
+  , Path = require("path")
   , http = require("http")
+  , crypto = require("crypto")
   , ws = require('../lib/ws');
+
+console.log(process.pid);
 
 /*-----------------------------------------------
   logging:
@@ -30,6 +33,29 @@ function log(msg) {
   sys.puts(timestamp() + ' - ' + msg.toString());
 };
 
+var cache = {};
+function readPage(path, callback){
+  if(cache[path]) {
+    callback(cache[path]);
+  } else {
+    cache[path] = [];
+    
+    fs.createReadStream( Path.normalize(Path.join(__dirname, path)), {
+      'flags': 'r',
+      'encoding': 'binary',
+      'mode': 0666,
+      'bufferSize': 4 * 1024
+    }).addListener("data", function(chunk){
+      cache[path].push(chunk);
+    }).on("end", function(){
+      callback(cache[path]);
+    });
+  }
+}
+
+readPage("client.html", function(){});
+
+var reqnum = 0;
 function serveFile(req, res){
   if(req.method == "GET"){
     if( req.url.indexOf("favicon") > -1 ){
@@ -39,16 +65,12 @@ function serveFile(req, res){
       res.end("");
     } else {
       log("HTTP: inbound request, served client.html");
-
       res.writeHead(200, {'Content-Type': 'text/html', 'Connection': 'close'});
-      fs.createReadStream( path.normalize(path.join(__dirname, "client.html")), {
-        'flags': 'r',
-        'encoding': 'binary',
-        'mode': 0666,
-        'bufferSize': 4 * 1024
-      }).addListener("data", function(chunk){
-        res.write(chunk, 'binary');
-      }).addListener("end",function() {
+      readPage("client.html", function(data){
+        data.forEach(function(datum){
+          res.write(datum);
+        });
+        
         res.end();
       });
     }

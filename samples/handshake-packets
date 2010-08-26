@@ -3,6 +3,12 @@ Upgrade: WebSocket
 Connection: Upgrade
 
 
+GET /secure HTTP/1.1
+Host: example.bank.com
+Upgrade: TLS/1.0
+Connection: Upgrade
+
+
 GET /app/cc4ce1421747bb6b1f44?channel=test_channel HTTP/1.1\r\nUpgrade: WebSocket\r\nConnection: Upgrade\r\n\r\n
 
 GET /app/cc4ce1421747bb6b1f44?channel=test_channel HTTP/1.1
@@ -32,6 +38,17 @@ Origin: http://localhost:3000
 Content-Length: 4
 
 test
+
+
+
+GET / HTTP/1.1
+Connection: Upgrade
+Upgrade: WebSocket
+Sec-WebSocket-Key1: 3e6b263  4 17 80
+Origin: http://example.com
+Sec-WebSocket-Key2: 17  9 G`ZD9   2 2b 7X 3 /r90
+
+WjN}|M(6
 
 
 
