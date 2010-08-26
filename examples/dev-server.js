@@ -83,6 +83,13 @@ function serveFile(req, res){
 /*-----------------------------------------------
   Spin up our server:
 -----------------------------------------------*/
+
+var certPem = fs.readFileSync(Path.normalize(Path.join(__dirname, "ssl/cert.pem")), 'ascii');
+var keyPem =  fs.readFileSync(Path.normalize(Path.join(__dirname, "ssl/cert.key")), 'ascii');
+
+var credentials = crypto.createCredentials({key:keyPem, cert:certPem});
+
+
 var httpServer = http.createServer(serveFile);
 
 
@@ -91,6 +98,8 @@ var server = ws.createServer({
   useStorage: true,
   server: httpServer
 });
+server.setSecure(credentials);
+
 
 server.addListener("listening", function(){
   log("Listening for connections.");
