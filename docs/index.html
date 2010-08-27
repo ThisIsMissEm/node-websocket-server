@@ -35,12 +35,16 @@
       padding: 0;
 
   }
+  
+
   </style>
 </head>
 <body>
   <div id="container">
     <h1>Node WebSocket Server</h1>
-
+    
+    <div class="notice"><p>Hey there, this is an early release for Node Knockout, there'll be full documentation coming really soon, if anything's missing, try the source code.</p></div>
+    
     <p>
       <a class="octothorpe" href="#s1-p1" id="s1-p1">#</a>
       <strong>Node WebSocket Server</strong> is a near specification compliant implementation of the server-side <a href="" title="View the specification">WebSocket Protocol</a>. It is built on top of <a href="http://nodejs.org" title="Node.js' project website">Node.js</a> as a third-party module, and is designed to support various versions of the WebSocket protocol &ndash; which is currently still an <abbr title="Internet Engineering Task Force">IETF</abbr> Draft.
@@ -225,11 +229,16 @@ server.<code class="nf">listen</code>(<code class="m">8080</code>);
       <dt><code>server.<span class="nf">listen</span>( port, [host] )</code></dt>
       <dd>Same as the <a href="http://nodejs.org/api.html#http-server-156" title="See the description of http.Server on Node.js documentation" class="pre">http.Server</a> listen method.</dd>
 
+      <dt><code>server.<span class="nf">setSecure</span>( credentials )</code></dt>
+      <dd>Switches to using SSL to encrypt connections with the supplied <code class="c">credentials</code>. Requires the client to connect using <code class="s">wss://</code> protocol, instead of the standard <code class="s">ws://</code>.</dd>
+      <dd><code class="pre">credentials:  <span class="k">crypto.Credentials</span></code></dd>
+
+
       <dt><code>server.<span class="nf">close</span>()</code></dt>
       <dd>Same as the <a href="http://nodejs.org/api.html#http-server-156" title="See the description of http.Server on Node.js documentation" class="pre">http.Server</a> close method.</dd>
 
       <h4>Inherited Methods</h4>
-
+      <p>The following methods are inherited from <a href="http://nodejs.org/api.html#eventemitter-13" class="k">Events.eventEmitter</a>.</p>
       <dl>
         <dt><code>server.<span class="nf">addListener</span>( event, callback )</code></dt>
         <dd>Adds a listener for the specified event that is emitted from the server.</dd>
@@ -269,19 +278,29 @@ server.<code class="nf">listen</code>(<code class="m">8080</code>);
     </p>
     <dl>
       <dt><code>connection.<span class="nf">id</span></code></dt>
-      <dd>...</dd>
+      <dd>A String, which is a unique identifier for the connection, this is based on the connection's remotePort.</dd>
 
       <dt><code>connection.<span class="nf">state</span></code></dt>
-      <dd>...</dd>
+      <dd>An Integer representing the current state of the connection, states are as follows:</dd>
+      <dd><ul class="plain">
+        <li>0. unknown</li>
+        <li>1. opening</li>
+        <li>2. waiting</li>
+        <li>3. handshaking</li>
+        <li>4, connected</li>
+        <li>5. closing</li>
+        <li>6. closed</li>
+      </ul></dd>
+      <dd>State changes can be listened for using the <span class="k">stateChange</span> event.</dd>
 
       <dt><code>connection.<span class="nf">version</span></code></dt>
-      <dd>...</dd>
+      <dd>A String, representing the protocol version the client is connecting from. Either <span class="s">draft75</span> or <span class="s">draft76</span>.</dd>
 
       <dt><code>connection.<span class="nf">headers</span></code></dt>
-      <dd>...</dd>
+      <dd>An Object, these are the HTTP headers that were sent with the initial WebSocket Handshake. See <a href="http://nodejs.org/api.html#request-headers-174" class="k">http.ServerRequest</a> for details.</dd>
 
       <dt><code>connection.<span class="nf">storage</span></code></dt>
-      <dd>...</dd>
+      <dd>This is an instance of your chosen Storage provider. By default, it is a in memory store with an API similar to redis. This can be disabled, in which case it will be <span class="kc">undefined</span>.</dd>
     </dl>
 
     <h4>Methods</h4>
@@ -304,6 +323,7 @@ server.<code class="nf">listen</code>(<code class="m">8080</code>);
     </dl>
 
     <h4>Inherited Methods</h4>
+    <p>The following methods are inherited from <a href="http://nodejs.org/api.html#eventemitter-13" class="k">Events.eventEmitter</a>.</p>
 
     <dl>
       <dt><code>connection.<span class="nf">addListener</span>( event, callback )</code></dt>
@@ -322,7 +342,7 @@ server.<code class="nf">listen</code>(<code class="m">8080</code>);
     </dl>
     
     <h4>Events</h4>
-    <p>...</p>
+    <p>Each connection comes with the following events that may be emitted through out it's life-cycle.</p>
     <dl>
       <dt class="pre">close</dt>
       <dd>Emitted whenever a client or server closes the connection.</dd>

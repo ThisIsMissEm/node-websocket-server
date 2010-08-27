@@ -23,7 +23,23 @@ a {
       background: none;
       color: #b950b7;
     }
-  
+
+.notice {
+  display: block;
+  padding: 1em;
+  margin: 1.4667em 0 2.9334em;
+  background:#FFF6BF;
+  color:#514721;
+  border:1px solid #FFD324;
+}
+  .notice p {
+    margin: 0;
+  }
+
+ul.plain {
+  list-style: none;
+}
+
 abbr {
   border-bottom: 1px dotted #454545;
 }
