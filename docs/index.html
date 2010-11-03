@@ -131,7 +131,7 @@ $ git commit -m "Adding websocket-server submodule"
 
 server.addListener(<code class="s">"connection"</code>, <code class="k">function</code>(connection){
   connection.addListener(<code class="s">"message"</code>, <code class="k">function</code>(msg){
-    server.<code class="nf">send</code>(msg);
+    server.<code class="nf">broadcast</code>(msg);
   });
 });
 
