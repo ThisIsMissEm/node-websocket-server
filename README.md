@@ -3,6 +3,10 @@
 This is a server for the WebSocket Protocol. It currently to works
 with both [draft75](http://tools.ietf.org/html/draft-hixie-thewebsocketprotocol-75) and [draft76](http://www.whatwg.org/specs/web-socket-protocol/) of the protocol specification.
 
+## Introduction ##
+
+Please read the guide: ./docs/index.html
+
 ## Compatibility ##
 
 This module is known to work with Node.js v0.1.98. May also work on Node.js greater than v0.1.94, dependent on protocol version being used.
