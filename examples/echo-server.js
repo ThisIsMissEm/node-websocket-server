@@ -9,10 +9,18 @@ server.addListener("connection", function(conn){
 
   conn.addListener("message", function(message){
     conn.broadcast("<"+conn.id+"> "+message);
+    
+    if(message == "error"){
+      conn.emit("error", "test");
+    }
   });
 });
 
-server.addListener("close", function(conn){
+server.addListener("error", function(){
+  console.log(Array.prototype.join.call(arguments, ", "));
+});
+
+server.addListener("disconnected", function(conn){
   server.broadcast("<"+conn.id+"> disconnected");
 });
 
