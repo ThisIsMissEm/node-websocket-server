@@ -64,8 +64,8 @@ var connect = function() {
   if (window["WebSocket"]) {
     recvd = 0;
     //host = (document.location.host != "" ? document.location.host : "localhost:8000");
-    host = "localhost";
-    conn = new WebSocket("wss://"+host+"/test");
+    host = "localhost:8000";
+    conn = new WebSocket("ws://"+host+"/test");
     conn.onmessage = function(evt) {
       log(evt.data);
 
