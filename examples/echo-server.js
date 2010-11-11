@@ -1,11 +1,7 @@
 var sys = require("sys")
-  , ws = require('../lib/ws');
+  , ws = require('../lib/ws/server');
 
-var server = ws.createServer();
-
-server.addListener("listening", function(){
-  sys.log("Listening for connections.");
-});
+var server = ws.createServer({debug: true});
 
 // Handle WebSocket Requests
 server.addListener("connection", function(conn){
