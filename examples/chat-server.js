@@ -2,7 +2,7 @@ var sys = require("sys")
   , http = require("http")
   , fs = require("fs")
   , path = require("path")
-  , ws = require('../lib/ws');
+  , ws = require('../lib/ws/server');
 
 var httpServer = http.createServer(function(req, res){
   if(req.method == "GET"){

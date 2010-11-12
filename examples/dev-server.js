@@ -3,7 +3,7 @@ var sys = require("sys")
   , Path = require("path")
   , http = require("http")
   , crypto = require("crypto")
-  , ws = require('../lib/ws');
+  , ws = require('../lib/ws/server');
 
 console.log(process.pid);
 
