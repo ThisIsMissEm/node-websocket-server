@@ -12,7 +12,7 @@ cp.exec("git describe", function(err, stdout, stderr) {
     },
     directories: {
       doc: "./doc",
-      lib: "./lib/ws/"
+      lib: "./lib/ws"
     },
     main: "./lib/ws/server",
     bugs: {
