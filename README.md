@@ -18,7 +18,7 @@ An example of a simple server that will echo the messages received back out can 
 The server acts like a normal http server in many respects, and exposes much of node's http.Server events and 
 methods. However, there are a few differences, and things that haven't yet been implemented.
 
-`ws.creareServer()` returns an instance of `ws.Server`, which acts like `http.Server`. However, not all methods 
+`ws.createServer()` returns an instance of `ws.Server`, which acts like `http.Server`. However, not all methods 
 and events that act on `http.Server` will act on `ws.Server`.  Your application can handle normal http requests by listening for the "request" event. 
 
 `ws.createServer()` and `ws.Server()` takes an options object as its only parameter. The options object has a these
