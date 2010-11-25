@@ -39,28 +39,13 @@ server.addListener("listening", function(){
 
 // Handle WebSocket Requests
 server.addListener("connection", function(conn){
-  conn.storage.set("username", "user_"+conn.id);
+  var username = "user_"+conn.id;
+  conn.send("** Connected as: "+username);
 
-  conn.send("** Connected as: user_"+conn.id);
-  conn.send("** Type `/nick USERNAME` to change your username");
-
-  conn.broadcast("** "+conn.storage.get("username")+" connected");
+  conn.broadcast("** "+username+" connected");
 
   conn.addListener("message", function(message){
-    if(message[0] == "/"){
-      // set username
-      if((matches = message.match(/^\/nick (\w+)$/i)) && matches[1]){
-        conn.storage.set("username", matches[1]);
-        conn.send("** you are now known as: "+matches[1]);
-
-      // get message count
-      } else if(/^\/stats/.test(message)){
-        conn.send("** you have sent "+conn.storage.get("messages", 0)+" messages.");
-      }
-    } else {
-      conn.storage.incr("messages");
-      server.broadcast(conn.storage.get("username")+": "+message);
-    }
+    server.broadcast(username+": "+message);
   });
 });
 
