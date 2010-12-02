@@ -1,5 +1,5 @@
 var sys = require("sys")
-  , ws = require('../lib/ws/server');
+  , ws = require('../../lib/ws/server');
 
 var server = ws.createServer({debug: true});
 

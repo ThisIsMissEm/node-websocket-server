@@ -24,6 +24,6 @@ GJSLINT = PYTHONPATH=tools/closure_linter/ \
 	--unix_mode --strict --nojsdoc
 
 lint:
-	@$(GJSLINT) -r lib/ -r test/
+	@$(GJSLINT) -r lib/
 
 .PHONY: release publish test test-all benchmark doc lint
