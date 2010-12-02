@@ -8,7 +8,7 @@ server.addListener("connection", function(conn){
   conn.send("Connection: "+conn.id);
 
   conn.addListener("message", function(message){
-    conn.broadcast("<"+conn.id+"> "+message);
+    conn.send("<"+conn.id+"> "+message);
     
     if(message == "error"){
       conn.emit("error", "test");
