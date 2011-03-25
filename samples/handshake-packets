@@ -45,10 +45,12 @@ GET / HTTP/1.1
 Connection: Upgrade
 Upgrade: WebSocket
 Sec-WebSocket-Key1: 3e6b263  4 17 80
-Origin: http://example.com
+Origin: http://localhost:8000
+Host: http://localhost:8000
 Sec-WebSocket-Key2: 17  9 G`ZD9   2 2b 7X 3 /r90
 
 WjN}|M(6
+
 
 
 

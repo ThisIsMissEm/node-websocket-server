@@ -11,7 +11,7 @@ var httpServer = http.createServer(function(req, res){
       res.end("");
     } else {
       res.writeHead(200, {'Content-Type': 'text/html', 'Connection': 'close'});
-      fs.createReadStream( path.normalize(path.join(__dirname, "chat.html")), {
+      fs.createReadStream( path.normalize(path.join(__dirname, "client.html")), {
         'flags': 'r',
         'encoding': 'binary',
         'mode': 0666,
@@ -39,18 +39,28 @@ server.addListener("listening", function(){
 
 // Handle WebSocket Requests
 server.addListener("connection", function(conn){
-
+  console.log('[*] open');
   conn.send("** Connected as: user_"+conn.id);
   conn.send("** Type `/nick USERNAME` to change your username");
 
   conn.broadcast("** "+conn.id+" connected");
 
   conn.addListener("message", function(message){
-    server.broadcast(conn.id+": "+message);
+    if (message == 'close') {
+      console.log('[-] close requested')
+      conn.close();
+    } else {
+      console.log('[+] ', (new Buffer(message)).inspect());
+      server.broadcast(conn.id+": "+message);
+    }
   });
+  
+  conn.addListener("close", function(){
+    console.log('[*] close');
+  })
 });
 
-server.addListener("close", function(conn){
+server.addListener("disconnect", function(conn){
   server.broadcast("<"+conn.id+"> disconnected");
 });
 
