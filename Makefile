@@ -19,9 +19,7 @@ benchmark:
 doc:
 	node tools/doctool/doctool.js
 
-GJSLINT = PYTHONPATH=tools/closure_linter/ \
-	python tools/closure_linter/closure_linter/gjslint.py \
-	--unix_mode --strict --nojsdoc
+GJSLINT = gjslint --unix_mode --strict --nojsdoc
 
 lint:
 	@$(GJSLINT) -r lib/
