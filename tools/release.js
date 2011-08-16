@@ -28,6 +28,10 @@ cp.exec("git describe", function(err, stdout, stderr) {
     name: "websocket-server",
     engines: {
       node: ">=0.2.0-0"
-    }
+    },
+    dependencies: {
+      "websocket-protocol": "~0.0.0"
+    },
+    devDependencies: {}
   }));
 });
