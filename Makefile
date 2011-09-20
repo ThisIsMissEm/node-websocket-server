@@ -19,4 +19,9 @@ benchmark:
 doc:
 	node tools/doctool/doctool.js
 
-.PHONY: release publish test test-all benchmark doc
+GJSLINT = gjslint --unix_mode --strict --nojsdoc
+
+lint:
+	@$(GJSLINT) -r lib/
+
+.PHONY: release publish test test-all benchmark doc lint
