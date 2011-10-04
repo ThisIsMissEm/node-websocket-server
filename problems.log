@@ -1,0 +1,2 @@
+1. if you send message too often(e.g send per 10ms), than unexpected thing will happen.Not sure whether it will happen if too many clients connected to the server (fixed 2011/9/25)
+2. cannot handle frame fragmentation
