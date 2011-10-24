@@ -1,6 +1,9 @@
 # node-websocket-server #
 
-This is a server for drafts [75](http://tools.ietf.org/html/draft-hixie-thewebsocketprotocol-75) and [76](http://tools.ietf.org/html/draft-hixie-thewebsocketprotocol-76) of the WebSocket Protocol.
+This is a server for drafts [75](http://tools.ietf.org/html/draft-hixie-thewebsocketprotocol-75),
+[76](http://tools.ietf.org/html/draft-hixie-thewebsocketprotocol-76),
+[10](http://tools.ietf.org/html/draft-ietf-hybi-thewebsocketprotocol-10) and
+[16](http://tools.ietf.org/html/draft-ietf-hybi-thewebsocketprotocol-16) of the WebSocket Protocol.
 
 ## Getting help:
 
